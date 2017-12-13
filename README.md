@@ -4,15 +4,15 @@ By Jia Zheng (jzheng2@andrew.cmu.edu)
 
 **Notes**
 
-Please use Firefox as Edge/Chrome does not support certain features used.
+Please use Firefox/Edge as Chrome does not support certain features used.
 
 Link to website [here](https://jzheng13.github.io/SSUI-Homework-7/).
 
-Formatted write-up [here]().
+Formatted write-up [here](doc/).
 
 ## Summary
 
-
+The aim of the visualisation is to show the distribution of crime across the city of Pittsburgh. A choropleth map is ideal in showing where most incidents occur and which parts of the city are the safest. 
 
 ## References
 
@@ -21,9 +21,6 @@ Formatted write-up [here]().
 
 2. click-to-zoom via transform by Mike Bostock
    https://bl.ocks.org/mbostock/2206590
-
-3. Calendar View by Mike Bostock
-   https://bl.ocks.org/mbostock/4063318   
 
 ## Resources used
 

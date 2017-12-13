@@ -1,7 +1,13 @@
 ﻿#legend {
-    z-index: 99;
+    color: white;
+    z-index: 2;
 }
 
-path .neighbourhood .active {
-    stroke: gold;
+.neighbourhood .active {
+    fill: cadetblue;
+}
+
+.neighbourhood:hover {
+    fill: cadetblue;
+    opacity: 0.5;
 }

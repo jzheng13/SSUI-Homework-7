@@ -23,64 +23,12 @@ d3.csv("data/police_blotter.csv", function (error, data) {
             pol_blotter.set(neighbourhood, 1);
         }
     });
-    //console.log(pol_blotter);
 });
 
 // pittsburgh map
 var svg = d3.select("#pitt-map");
 var width = 480, height = 300;
 var zoomed = null;
-
-// scale of incidents and position
-var incidents = d3.scaleLinear()
-    .domain([1, 10])
-    .rangeRound([335, 470]);
-
-// set colours
-var colour = d3.scaleThreshold()
-    .domain(d3.range(2, 10))
-    .range(d3.schemeOrRd[9]);
-
-// legend div
-var legend = svg.append("g")
-    .attr("id", "legend")
-    .attr("transform", "translate(0, 20)");
-
-// draw scale and colour
-legend.selectAll("rect").data(colour.range().map(function (d) {
-    d = colour.invertExtent(d);
-    if (d[0] == null) {
-        d[0] = incidents.domain()[0];
-    }
-    if (d[1] == null) {
-        d[1] = incidents.domain()[1];
-    }
-    return d;
-}))
-    .enter().append("rect")
-    .attr("height", 9)
-    .attr("x", function (d) { return incidents(d[0]); })
-    .attr("width", function (d) { return incidents(d[1]) - incidents(d[0]); })
-    .attr("fill", function (d) { return colour(d[0]) });
-
-// caption for scale
-legend.append("text")
-    .attr("class", "legend-caption")
-    .attr("x", incidents.range()[0])
-    .attr("y", -5)
-    .attr("fill", "#000")
-    .attr("font-size", "8")
-    .attr("text-anchor", "start")
-    .text("Number of crimes");
-
-// label for scale
-legend.call(d3.axisBottom(incidents)
-    .tickSize(10)
-    .tickFormat(function (incidents) { return (incidents - 1) * 10; })
-    .tickValues(colour.domain()))
-    .attr("font-size", "7")
-    .select(".domain")
-    .remove();
 
 // project onto svg (centering at pittsburgh coords, scale, then transform)
 var projection = d3.geoMercator()
@@ -116,6 +64,60 @@ d3.json("data/pittsburgh_neighbourhoods.geojson", function (error, data) {
         .attr("d", outline)
         .on("click", zoom);
 });
+
+// container
+svg.append("rect").attr("x", 330).attr("y", 5).attr("height", 40).attr("width", 145).attr("fill", "white");
+
+// scale of incidents and position
+var incidents = d3.scaleLinear()
+    .domain([1, 10])
+    .rangeRound([335, 470]);
+
+// set colours
+var colour = d3.scaleThreshold()
+    .domain(d3.range(2, 10))
+    .range(d3.schemeOrRd[9]);
+
+// legend div
+var legend = svg.append("g")
+    .attr("id", "legend")
+    .attr("transform", "translate(0, 20)");
+
+// draw scale and colour
+legend.selectAll("rect").data(colour.range().map(function (d) {
+    d = colour.invertExtent(d);
+    if (d[0] == null) {
+        d[0] = incidents.domain()[0];
+    }
+    if (d[1] == null) {
+        d[1] = incidents.domain()[1];
+    }
+    return d;
+}))
+    .enter().append("rect")
+    .attr("height", 8)
+    .attr("x", function (d) { return incidents(d[0]); })
+    .attr("width", function (d) { return incidents(d[1]) - incidents(d[0]); })
+    .attr("fill", function (d) { return colour(d[0]) });
+
+// caption for scale
+legend.append("text")
+    .attr("class", "legend-caption")
+    .attr("x", incidents.range()[0])
+    .attr("y", -5)
+    .attr("fill", "#000")
+    .attr("font-size", "8")
+    .attr("text-anchor", "start")
+    .text("Number of crimes");
+
+// label for scale
+legend.call(d3.axisBottom(incidents)
+    .tickSize(10)
+    .tickFormat(function (incidents) { return (incidents - 1) * 10; })
+    .tickValues(colour.domain()))
+    .attr("font-size", "7")
+    .select(".domain")
+    .remove();
 
 // zoom function
 function zoom(n) {
