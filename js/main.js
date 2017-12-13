@@ -25,6 +25,18 @@ d3.csv("data/police_blotter.csv", function (error, data) {
     });
 });
 
+// population stats map
+var population = d3.map();
+
+// populate population map
+d3.csv("data/population.csv", function (error, data) {
+    if (error) throw error;
+    data.forEach(function (row) {
+        population.set(row.Neighborhood, row["Estimate; Total"]);
+    });
+    //console.log(population);
+});
+
 // pittsburgh map
 var svg = d3.select("#pitt-map");
 var width = 480, height = 300;
@@ -55,12 +67,17 @@ d3.json("data/pittsburgh_neighbourhoods.geojson", function (error, data) {
         .attr("stroke-width", 0.5)
         .attr("fill", function (d) {
             if (!pol_blotter.has(d.properties.neighborhoods)) {
-                pol_blotter.set(d.properties.neighborhoods, 0);
+                pol_blotter.set(d.properties.neighborhoods, 0);            
             }
+            console.log(pol_blotter.get(d.properties.neighborhoods) / population.get(d.properties.neighborhoods));
             return colour(pol_blotter.get(d.properties.neighborhoods) / 10 + 1);
         })
         .attr("data-toggle", "tooltip")
-        .attr("title", function (d) { return d.properties.neighborhoods + ": " + pol_blotter.get(d.properties.neighborhoods); })
+        .attr("title", function (d) {
+            var crimes = pol_blotter.get(d.properties.neighborhoods);
+            var per_capita = (crimes / population.get(d.properties.neighborhoods)).toFixed(3);
+            return d.properties.neighborhoods + ": " + crimes + " total, " + per_capita + "/capita";
+        })
         .attr("d", outline)
         .on("click", zoom);
 });
