@@ -42,6 +42,15 @@ var svg = d3.select("#pitt-map");
 var width = 480, height = 300;
 var zoomed = null;
 
+svg.append("text")
+    .attr("x", 30)
+    .attr("y", 25)
+    .attr("fill", "#000")
+    .attr("font-size", "8")
+    .attr("font-weight", "bold")
+    .attr("text-anchor", "start")
+    .text("Choropleth map of crime incidents in Pittsburgh from 11/12 to 12/12");
+
 // project onto svg (centering at pittsburgh coords, scale, then transform)
 var projection = d3.geoMercator()
     .center([-79.9959, 40.4406])
@@ -122,8 +131,9 @@ legend.append("text")
     .attr("class", "legend-caption")
     .attr("x", incidents.range()[0])
     .attr("y", -5)
-    .attr("fill", "#000")
-    .attr("font-size", "8")
+    .attr("fill", "#323232")
+    .attr("font-size", "7.5")
+    .attr("font-weight", "lighter")
     .attr("text-anchor", "start")
     .text("Number of crimes");
 
@@ -133,6 +143,8 @@ legend.call(d3.axisBottom(incidents)
     .tickFormat(function (incidents) { return (incidents - 1) * 10; })
     .tickValues(colour.domain()))
     .attr("font-size", "7")
+    .attr("font-weight", "lighter")
+    .attr("fill", "#323232")
     .select(".domain")
     .remove();
 
