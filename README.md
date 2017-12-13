@@ -4,11 +4,11 @@ By Jia Zheng (jzheng2@andrew.cmu.edu)
 
 **Notes**
 
-Please use Firefox/Edge as Chrome does not support certain features used.
+Please use Firefox as Chrome/Edge does not support certain Bootstrap features used.
 
 Link to website [here](https://jzheng13.github.io/SSUI-Homework-7/).
 
-Formatted write-up [here](doc/).
+Formatted write-up [here](doc/assign7-writeup-SSUI.pdf).
 
 ## Summary
 
