@@ -1,3 +1,7 @@
-﻿.caption {
-    font-size: 11px;
+﻿#legend {
+    z-index: 99;
+}
+
+path .neighbourhood .active {
+    stroke: gold;
 }

@@ -6,7 +6,7 @@ By Jia Zheng (jzheng2@andrew.cmu.edu)
 
 Please use Firefox as Edge/Chrome does not support certain features used.
 
-Link to website [here]().
+Link to website [here](https://jzheng13.github.io/SSUI-Homework-7/).
 
 Formatted write-up [here]().
 

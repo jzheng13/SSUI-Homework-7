@@ -4,6 +4,11 @@
  *                                                                           *
  *****************************************************************************/
 
+// enable tooltips
+$(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+})
+
 // police blotter stats map
 var pol_blotter = d3.map();
 
@@ -23,7 +28,8 @@ d3.csv("data/police_blotter.csv", function (error, data) {
 
 // pittsburgh map
 var svg = d3.select("#pitt-map");
-var width = 480, height = 300; 
+var width = 480, height = 300;
+var zoomed = null;
 
 // scale of incidents and position
 var incidents = d3.scaleLinear()
@@ -67,6 +73,15 @@ legend.append("text")
     .attr("text-anchor", "start")
     .text("Number of crimes");
 
+// label for scale
+legend.call(d3.axisBottom(incidents)
+    .tickSize(10)
+    .tickFormat(function (incidents) { return (incidents - 1) * 10; })
+    .tickValues(colour.domain()))
+    .attr("font-size", "7")
+    .select(".domain")
+    .remove();
+
 // project onto svg (centering at pittsburgh coords, scale, then transform)
 var projection = d3.geoMercator()
     .center([-79.9959, 40.4406])
@@ -87,7 +102,45 @@ d3.json("data/pittsburgh_neighbourhoods.geojson", function (error, data) {
         .data(data.features)
         .enter()
         .append("path")
+        .attr("class", "neighbourhood")
         .attr("stroke", "white")
         .attr("stroke-width", 0.5)
-        .attr("d", outline);
+        .attr("fill", function (d) {
+            if (!pol_blotter.has(d.properties.neighborhoods)) {
+                pol_blotter.set(d.properties.neighborhoods, 0);
+            }
+            return colour(pol_blotter.get(d.properties.neighborhoods) / 10 + 1);
+        })
+        .attr("data-toggle", "tooltip")
+        .attr("title", function (d) { return d.properties.neighborhoods + ": " + pol_blotter.get(d.properties.neighborhoods); })
+        .attr("d", outline)
+        .on("click", zoom);
 });
+
+// zoom function
+function zoom(n) {
+    var x, y, k;
+
+    console.log(n);
+
+    if (n && zoomed !== n) {
+        var centroid = outline.centroid(n);
+        x = centroid[0];
+        y = centroid[1];
+        k = 4;
+        zoomed = n;
+    } else {
+        x = width / 2;
+        y = height / 2 + 20;
+        k = 1;
+        zoomed = null;
+    }
+
+    pitt_neighbourhoods.selectAll("path")
+        .classed("active", zoomed && function (n) { return n === zoomed });
+
+    pitt_neighbourhoods.transition()
+        .duration(500)
+        .attr("transform", "translate(" + width / 2 + "," + (height / 2 + 20) + ")scale(" + k + ")translate(" + -x + "," + -y + ")")
+        .style("stroke-width", 2 / k + "px");
+}
