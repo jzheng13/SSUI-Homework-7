@@ -67,8 +67,14 @@ legend.append("text")
     .attr("text-anchor", "start")
     .text("Number of crimes");
 
+// project onto svg (centering at pittsburgh coords, scale, then transform)
+var projection = d3.geoMercator()
+    .center([-79.9959, 40.4406])
+    .scale(95000)
+    .translate([width/2, (height/2 + 20)]);
+
 // neighbourhood outlines
-var outline = d3.geoPath();
+var outline = d3.geoPath().projection(projection);
 
 // container to keep neighbourhoods
 var pitt_neighbourhoods = svg.append("g")
@@ -81,5 +87,7 @@ d3.json("data/pittsburgh_neighbourhoods.geojson", function (error, data) {
         .data(data.features)
         .enter()
         .append("path")
+        .attr("stroke", "white")
+        .attr("stroke-width", 0.5)
         .attr("d", outline);
 });
