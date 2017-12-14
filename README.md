@@ -4,7 +4,7 @@ By Jia Zheng (jzheng2@andrew.cmu.edu)
 
 **Notes**
 
-Please use Firefox as Chrome/Edge does not support certain Bootstrap features used.
+Please use Firefox as Chrome/Edge does not support certain Bootstrap features used. The tooltips may not appear if the JS files are not loaded or were cached, so please refresh or clear your cookies/cache if the tooltips do not appear on hover.
 
 Link to website [here](https://jzheng13.github.io/SSUI-Homework-7/).
 
